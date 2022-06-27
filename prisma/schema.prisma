@@ -28,7 +28,7 @@ model sessions {
 model users {
   id       Int     @id @default(autoincrement())
   username String  @db.VarChar(16)
+  email    String  @db.VarChar(100)
   password String  @db.VarChar(60)
-  fullname String  @db.VarChar(100)
   links    links[]
 }
