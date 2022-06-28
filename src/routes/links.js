@@ -1,54 +1,77 @@
 const express = require('express');
 const router = express.Router();
-
-const pool = require('../database');
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient();
 const { isLoggedIn } = require('../lib/auth');
+
+async function main(req, userId) {
+    await prisma.links.create({
+        data: {
+            title: req.body.title,
+            url: req.body.url,
+            description: req.body.description,
+            user_id: userId
+        }
+      })
+}
 
 router.get('/add', (req, res) => {
     res.render('links/add');
 });
 
 router.post('/add', async (req, res) => {
-    const { title, url, description } = req.body;
-    const newLink = {
-        title,
-        url,
-        description,
-        user_id: req.user.id
-    };
-    await pool.query('INSERT INTO links set ?', [newLink]);
+    let userId = req._passport.session.user
+    main(req, userId)
+    .catch((e) => {
+        throw e
+    })
+    .finally(async () => {
+        await prisma.$disconnect()
+    })
     req.flash('success', 'Link Saved Successfully');
     res.redirect('/links');
 });
 
 router.get('/', isLoggedIn, async (req, res) => {
-    const links = await pool.query('SELECT * FROM links WHERE user_id = ?', [req.user.id]);
+    const links = await prisma.links.findMany({
+        where: {
+            user_id: req._passport.session.user,
+        },
+    });
     res.render('links/list', { links });
 });
 
 router.get('/delete/:id', async (req, res) => {
-    const { id } = req.params;
-    await pool.query('DELETE FROM links WHERE ID = ?', [id]);
+    await prisma.links.delete({
+        where: {
+            id: parseInt(req.params.id),
+        },
+    });
     req.flash('success', 'Link Removed Successfully');
     res.redirect('/links');
 });
 
 router.get('/edit/:id', async (req, res) => {
-    const { id } = req.params;
-    const links = await pool.query('SELECT * FROM links WHERE id = ?', [id]);
-    console.log(links);
+    const links = await prisma.links.findMany({
+        where: {
+            id: parseInt(req.params.id),
+        },
+    });
     res.render('links/edit', {link: links[0]});
 });
 
 router.post('/edit/:id', async (req, res) => {
-    const { id } = req.params;
     const { title, description, url} = req.body; 
-    const newLink = {
-        title,
-        description,
-        url
-    };
-    await pool.query('UPDATE links set ? WHERE id = ?', [newLink, id]);
+    await prisma.links.update({
+        where: {
+            id: parseInt(req.params.id), 
+        },
+        data: {
+            title: title,
+            description: description,
+            url: url
+        },
+    });
     req.flash('success', 'Link Updated Successfully');
     res.redirect('/links');
 });
