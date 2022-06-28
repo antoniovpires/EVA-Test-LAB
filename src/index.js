@@ -58,6 +58,7 @@ app.use('/links', require('./routes/links'));
 
 // Public
 app.use(express.static(path.join(__dirname, 'public')));
+app.use("/images", express.static(path.join(__dirname, "/public/images")));
 
 // Starting
 app.listen(app.get('port'), () => {

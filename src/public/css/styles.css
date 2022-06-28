@@ -45,3 +45,23 @@ font-family: 'Oswald', sans-serif;
       font-size: 5.5rem;
     }
   }
+
+.card-body img {
+  max-width: 100%;
+}
+
+.productPrice {
+  margin-top: 0.5rem ;
+}
+
+.product-container {
+  width: 30%;
+  text-align: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.product-container img {
+  width: 100%;
+  margin: auto;
+}

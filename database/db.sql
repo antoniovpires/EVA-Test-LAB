@@ -20,8 +20,19 @@ ALTER TABLE users
 ALTER TABLE users
   ADD email VARCHAR(100) NOT NULL;
 
+ALTER TABLE links
+  ADD image VARCHAR(255) NOT NULL;
+
 ALTER TABLE users
-  DROP COLUMN fullname; 
+  DROP COLUMN fullname;
+
+ALTER TABLE links
+  RENAME COLUMN nome TO name;
+
+ALTER TABLE links
+  RENAME COLUMN url TO price;
+
+ALTER 
 
 DESCRIBE users;
 

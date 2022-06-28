@@ -3,14 +3,17 @@ const router = express.Router();
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient();
 const { isLoggedIn } = require('../lib/auth');
+const multer  = require('multer')
+const upload = multer({ dest: 'src/public/images' })
 
 async function main(req, userId) {
     await prisma.links.create({
         data: {
-            title: req.body.title,
-            url: req.body.url,
+            name: req.body.name,
+            price: req.body.price,
             description: req.body.description,
-            user_id: userId
+            user_id: userId,
+            image: req.file.filename
         }
       })
 }
@@ -19,8 +22,9 @@ router.get('/add', (req, res) => {
     res.render('links/add');
 });
 
-router.post('/add', async (req, res) => {
+router.post('/add', upload.single('productImage'), async (req, res) => {
     let userId = req._passport.session.user
+    console.log(req.file)
     main(req, userId)
     .catch((e) => {
         throw e
@@ -61,19 +65,29 @@ router.get('/edit/:id', async (req, res) => {
 });
 
 router.post('/edit/:id', async (req, res) => {
-    const { title, description, url} = req.body; 
+    const { name, price, description} = req.body; 
     await prisma.links.update({
         where: {
             id: parseInt(req.params.id), 
         },
         data: {
-            title: title,
+            name: name,
             description: description,
-            url: url
+            price: price
         },
     });
     req.flash('success', 'Link Updated Successfully');
     res.redirect('/links');
+});
+
+router.get('/:id', async (req, res) => {
+    const links = await prisma.links.findMany({
+        where: {
+            id: parseInt(req.params.id),
+        },
+    });
+    console.log(links[0])
+    res.render('links/product', {link: links[0]});
 });
 
 module.exports = router;
