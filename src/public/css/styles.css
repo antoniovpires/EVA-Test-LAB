@@ -1,7 +1,13 @@
-body {
-    background: #f5f6fa;
-font-family: 'Oswald', sans-serif;
+:root {
+  --red: #dc3545;
+  --black: #000;
+  --grey: #f8f9fa;
+  --white: #fff;
+}
 
+body {
+    background: var(--grey);
+    font-family: 'Oswald', sans-serif;
     overflow: hidden;
 }
 
@@ -11,24 +17,21 @@ font-family: 'Oswald', sans-serif;
 }
 
 .navbar {
-    background: black !important;
+    background: var(--black) !important;
+}
+
+.navbar-brand {
+  font-size: 2rem;
 }
 
 .nav-link {
-    color: #fff !important;
+    color: var(--white) !important;
 }
 
 .masthead {
-    color: white;
-    min-height: 30rem;
+    color: var(--black);
     width: 100%;
     height: 100%;
-    padding-top: 8rem;
-    padding-bottom: 8rem;
-    background: url('/img/background.jpeg');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
 }
 
 .masthead h1 {
@@ -39,12 +42,23 @@ font-family: 'Oswald', sans-serif;
   
   @media (min-width: 992px) {
     .masthead {
-      height: 100vh;
+      height: 80vh;
     }
     .masthead h1 {
       font-size: 5.5rem;
     }
   }
+
+mb-5 {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.masthead h3 span {
+  color: var(--red);
+}
 
 .card-body img {
   max-width: 100%;
