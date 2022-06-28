@@ -7,10 +7,10 @@ Esse é um teste que desenvolvi durante um processo seletivo para uma vaga no Ba
 - Multer
 - Passport etc...
 
-## O Site
+# O Site
 
 
-### Acesso 
+## Acesso 
 
 Logo ao entrar, tem um botão chamativo para realizar o cadastro. Nessa etapa eu gostaria de ter implementado tratamentos de erro para deixar a aplicação mais completa.
 
@@ -20,7 +20,7 @@ Caso não seja o primeiro acesso, tem um botão para realizar o Login logo abaix
 
 (GIF Logout e Login)
 
-### CRUD dos Produtos! 
+## CRUD dos Produtos! 
 
 Para adicionar os produtos é fácil, basta clicar no botão na barra de navegação e preencher os campos necessários. Infelizmente não consegui estabelecer uma regra para liberar o botão de salvar apenas se pelo menos uma imagem estiver adicionada.
 
@@ -38,7 +38,7 @@ Por fim, você pode remover os produtos que desejar e realizar o Logout! Percebi
 
 (GIF Removendo)
 
-## Conclusão
+# Conclusão
 
 Foi um projeto desafiador, e eu queria poder ter feito muito mais. Com o tempo que tive disponível, aprendi várias tecnologias que nunca sequer havia tido contato anteriormente. Não foi um teste fácil, mas foi recompensador. Me sinto mais confiante e continuarei trabalhando nele para melhorar ainda mais minhas habilidades e também o funcionamento da aplicação.
 
