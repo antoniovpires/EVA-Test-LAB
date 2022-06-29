@@ -1,8 +1,8 @@
+const { application } = require('express');
 const express = require('express');
 const router = express.Router();
-
 const passport = require('passport');
-const { isLoggedIn } = require('../lib/auth');
+
 
 // SIGNUP
 router.get('/signup', (req, res) => {
@@ -23,8 +23,7 @@ router.get('/signin', (req, res) => {
 router.post('/signin', (req, res, next) => {
   req.check('email', 'Email is Required').notEmpty();
   req.check('password', 'Password is Required').notEmpty();
-  const errors = req.validationErrors();
-  if (errors.length > 0) {
+  if (req.validationErrors()) {
     req.flash('message', errors[0].msg);
     res.redirect('/signin');
   }

@@ -13,7 +13,8 @@ async function main(req, userId) {
             price: req.body.price,
             description: req.body.description,
             user_id: userId,
-            image: req.file.filename
+            image: req.files[0].filename,
+            images: req.files
         }
       })
 }
@@ -22,9 +23,8 @@ router.get('/add', (req, res) => {
     res.render('links/add');
 });
 
-router.post('/add', upload.single('productImage'), async (req, res) => {
+router.post('/add', upload.array('productImage', 5), async (req, res) => {
     let userId = req._passport.session.user
-    console.log(req.file)
     main(req, userId)
     .catch((e) => {
         throw e
@@ -37,6 +37,7 @@ router.post('/add', upload.single('productImage'), async (req, res) => {
 });
 
 router.get('/', isLoggedIn, async (req, res) => {
+    console.log(req._passport.session.user);
     const links = await prisma.links.findMany({
         where: {
             user_id: req._passport.session.user,

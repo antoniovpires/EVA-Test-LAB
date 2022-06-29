@@ -18,7 +18,7 @@ require('./lib/passport');
 // Settings
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
-app.engine('.hbs', exphbs({
+app.engine('.hbs', exphbs.engine({
   defaultLayout: 'main',
   layoutsDir: path.join(app.get('views'), 'layouts'),
   partialsDir: path.join(app.get('views'), 'partials'),
@@ -41,7 +41,7 @@ app.use(session({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(validator());
+app.use(validator())
 
 // Global variables
 app.use((req, res, next) => {
@@ -55,6 +55,7 @@ app.use((req, res, next) => {
 app.use(require('./routes/index'));
 app.use(require('./routes/authentication'));
 app.use('/links', require('./routes/links'));
+
 
 // Public
 app.use(express.static(path.join(__dirname, 'public')));

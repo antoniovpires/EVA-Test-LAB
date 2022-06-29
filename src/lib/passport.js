@@ -17,14 +17,17 @@ passport.use('local.signin', new LocalStrategy({
           email: username,
       },
     });
+  console.log(rows)
   if (rows.length > 0) {
     const user = rows[0];
     const validPassword = await helpers.matchPassword(password, user.password)
-    if (!validPassword) {
-      done(null, false, req.flash('message', 'Senha Incorreta'));
+    if (validPassword) {
+      done(null, user.id, req.flash('success', 'Olá! Como você está?'));
+    } else {
+      done(null, false, req.flash('message', 'Incorrect Password'));
     }
   } else {
-    return done(null, false, req.flash('message', 'Esse email não está cadastrado!'));
+    return done(null, false, req.flash('message', 'The Username does not exists.'));
   }
 }));
 
