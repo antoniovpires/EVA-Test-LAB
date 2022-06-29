@@ -1,11 +1,11 @@
 # Back-End-Test - Productz Page
 
 Esse é um teste que desenvolvi durante um processo seletivo para uma vaga no Back-End! Utilizei tecnologias como:
-✔️ NodeJS
-✔️ Prisma (ORM)
-✔️ MySQL
-✔️ Multer
-✔️ Passport etc...
+- NodeJS
+- Prisma (ORM)
+- MySQL
+- Multer
+- Passport etc...
 
 # O Site
 
