@@ -1,4 +1,2 @@
--- DELETE ALL ROWS
-DELETE FROM users;
-
-DROP table links;
+ALTER TABLE links
+  RENAME TO products;

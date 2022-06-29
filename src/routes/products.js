@@ -6,8 +6,11 @@ const { isLoggedIn } = require('../lib/auth');
 const multer  = require('multer')
 const upload = multer({ dest: 'src/public/images' })
 
+
+////////// CRIAÇÃO DO PRODUTO //////////
+
 async function main(req, userId) {
-    await prisma.links.create({
+    await prisma.products.create({
         data: {
             name: req.body.name,
             price: req.body.price,
@@ -20,7 +23,7 @@ async function main(req, userId) {
 }
 
 router.get('/add', (req, res) => {
-    res.render('links/add');
+    res.render('products/add');
 });
 
 router.post('/add', upload.array('productImage', 5), async (req, res) => {
@@ -32,42 +35,47 @@ router.post('/add', upload.array('productImage', 5), async (req, res) => {
     .finally(async () => {
         await prisma.$disconnect()
     })
-    req.flash('success', 'Link Saved Successfully');
-    res.redirect('/links');
+    req.flash('success', 'Produto salvo com sucesso!');
+    res.redirect('/products');
 });
 
+////////// LISTANDO TODOS OS PRODUTOS //////////
+
 router.get('/', isLoggedIn, async (req, res) => {
-    console.log(req._passport.session.user);
-    const links = await prisma.links.findMany({
+    const products = await prisma.products.findMany({
         where: {
             user_id: req._passport.session.user,
         },
     });
-    res.render('links/list', { links });
+    res.render('products/list', { products });
 });
+
+////////// EXCLUINDO PRODUTOS //////////
 
 router.get('/delete/:id', async (req, res) => {
-    await prisma.links.delete({
+    await prisma.products.delete({
         where: {
             id: parseInt(req.params.id),
         },
     });
-    req.flash('success', 'Link Removed Successfully');
-    res.redirect('/links');
+    req.flash('success', 'Produto removido com sucesso!');
+    res.redirect('/products');
 });
 
+////////// EDITANDO O PRODUTO //////////
+
 router.get('/edit/:id', async (req, res) => {
-    const links = await prisma.links.findMany({
+    const products = await prisma.products.findMany({
         where: {
             id: parseInt(req.params.id),
         },
     });
-    res.render('links/edit', {link: links[0]});
+    res.render('products/edit', {product: products[0]});
 });
 
 router.post('/edit/:id', async (req, res) => {
     const { name, price, description} = req.body; 
-    await prisma.links.update({
+    await prisma.products.update({
         where: {
             id: parseInt(req.params.id), 
         },
@@ -77,18 +85,19 @@ router.post('/edit/:id', async (req, res) => {
             price: price
         },
     });
-    req.flash('success', 'Link Updated Successfully');
-    res.redirect('/links');
+    req.flash('success', 'Produto atualizado com sucesso!');
+    res.redirect('/products');
 });
 
+////////// ABRINDO UM PRODUTO INDIVIDUALMENTE //////////
+
 router.get('/:id', async (req, res) => {
-    const links = await prisma.links.findMany({
+    const products = await prisma.products.findMany({
         where: {
             id: parseInt(req.params.id),
         },
     });
-    console.log(links[0])
-    res.render('links/product', {link: links[0]});
+    res.render('products/product', {product: products[0]});
 });
 
 module.exports = router;

@@ -1,5 +1,5 @@
+// Isso é responsável pela encriptação
 const bcrypt = require('bcryptjs');
-
 const helpers = {};
 
 helpers.encryptPassword = async (password) => {

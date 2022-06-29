@@ -1,6 +1,6 @@
-CREATE DATABASE db_links;
+CREATE DATABASE db_products;
 
-USE db_links;
+USE db_products;
 
 -- TABLE USER
 -- all pasword wil be encrypted using SHA1
@@ -17,41 +17,19 @@ ALTER TABLE users
 ALTER TABLE users
   MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 2;
 
-ALTER TABLE users
-  ADD email VARCHAR(100) NOT NULL;
-
 ALTER TABLE links
   ADD images JSON;
-
-ALTER TABLE links
-  MODIFY description TEXT NOT NULL
-
-ALTER TABLE users
-  DROP COLUMN fullname;
-
-ALTER TABLE links
-  RENAME COLUMN nome TO name;
-
-ALTER TABLE links
-  RENAME COLUMN url TO price;
-
-ALTER 
-
-DESCRIBE users;
-
-INSERT INTO users (id, username, email, password) 
-  VALUES (1, 'john', 'johndoe@gmail.com', 'password1');
-
-SELECT * FROM users;
 
 -- LINKS TABLE
 CREATE TABLE links (
   id INT(11) NOT NULL,
-  title VARCHAR(150) NOT NULL,
-  url VARCHAR(255) NOT NULL,
+  name VARCHAR(150) NOT NULL,
+  price VARCHAR(255) NOT NULL,
   description TEXT,
   user_id INT(11),
   created_at timestamp NOT NULL DEFAULT current_timestamp,
+  image VARCHAR(255),
+  images JSON,
   CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
@@ -60,7 +38,3 @@ ALTER TABLE links
 
 ALTER TABLE links
   MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 2;
-
-DESCRIBE links;
-
-ALTER 

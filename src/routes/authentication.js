@@ -1,21 +1,20 @@
-const { application } = require('express');
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
 
-// SIGNUP
+// CADASTRO
 router.get('/signup', (req, res) => {
   res.render('auth/signup');
 });
 
 router.post('/signup', passport.authenticate('local.signup', {
-  successRedirect: '/links',
+  successRedirect: '/products',
   failureRedirect: '/signup',
   failureFlash: true
 }));
 
-// SINGIN
+// LOGIN
 router.get('/signin', (req, res) => {
   res.render('auth/signin');
 });
@@ -28,11 +27,13 @@ router.post('/signin', (req, res, next) => {
     res.redirect('/signin');
   }
   passport.authenticate('local.signin', {
-    successRedirect: '/links',
+    successRedirect: '/products',
     failureRedirect: '/signin',
     failureFlash: true
   })(req, res, next);
 });
+
+// LOGOUT
 
 router.get('/logout', (req, res) => {
   req.logOut();

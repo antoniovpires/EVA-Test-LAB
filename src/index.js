@@ -8,14 +8,35 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const MySQLStore = require('express-mysql-session')(session);
 const bodyParser = require('body-parser');
-
+const mysql = require('mysql');
 const { database } = require('./keys');
+const pool = mysql.createPool(database);
 
-// Intializations
+// Inicializando
 const app = express();
 require('./lib/passport');
 
-// Settings
+// Checando conexão com banco de dados
+pool.getConnection((err, connection) => {
+  if (err) {
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      console.error('Database connection was closed.');
+    }
+    if (err.code === 'ER_CON_COUNT_ERROR') {
+      console.error('Database has to many connections');
+    }
+    if (err.code === 'ECONNREFUSED') {
+      console.error('Database connection was refused');
+    }
+  }
+
+  if (connection) connection.release();
+  console.log('DB is Connected');
+
+  return;
+});
+
+// Configurações
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', exphbs.engine({
@@ -33,7 +54,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.use(session({
-  secret: 'faztmysqlnodemysql',
+  secret: 'ihopeipassthistesforeva',
   resave: false,
   saveUninitialized: false,
   store: new MySQLStore(database)
@@ -43,7 +64,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(validator())
 
-// Global variables
+// Variáveis Globais
 app.use((req, res, next) => {
   app.locals.message = req.flash('message');
   app.locals.success = req.flash('success');
@@ -51,17 +72,18 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
+// Rotas
 app.use(require('./routes/index'));
 app.use(require('./routes/authentication'));
-app.use('/links', require('./routes/links'));
+app.use('/products', require('./routes/products'));
 
 
 // Public
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/images", express.static(path.join(__dirname, "/public/images")));
 
-// Starting
+
+// Iniciando o servidor
 app.listen(app.get('port'), () => {
   console.log('Server is in port', app.get('port'));
 });

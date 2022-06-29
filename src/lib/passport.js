@@ -5,7 +5,7 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient();
 
 
-// SIGN-IN SECTION
+// RESPONSÁVEL PELO LOGIN
 
 passport.use('local.signin', new LocalStrategy({
   usernameField: 'email',
@@ -17,22 +17,21 @@ passport.use('local.signin', new LocalStrategy({
           email: username,
       },
     });
-  console.log(rows)
   if (rows.length > 0) {
     const user = rows[0];
     const validPassword = await helpers.matchPassword(password, user.password)
     if (validPassword) {
       done(null, user.id, req.flash('success', 'Olá! Como você está?'));
     } else {
-      done(null, false, req.flash('message', 'Incorrect Password'));
+      done(null, false, req.flash('message', 'Senha Incorreta'));
     }
   } else {
-    return done(null, false, req.flash('message', 'The Username does not exists.'));
+    return done(null, false, req.flash('message', 'Este e-mail não está cadastrado!.'));
   }
 }));
 
 
-// SIGN-UP SECTION
+// RESPONSÁVEL PELO CADASTRO
 
 passport.use('local.signup', new LocalStrategy({
   usernameField: 'username',
@@ -50,6 +49,8 @@ passport.use('local.signup', new LocalStrategy({
   })
   return done(null, newUser.id);
 }));
+
+// RESPONSÁVEL PELA SERIALIZAÇÃO DO USUÁRIO!
 
 passport.serializeUser((user, done) => {
   done(null, user);
